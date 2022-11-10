@@ -42,3 +42,13 @@ weather['num_temp_fahr'] = num_temp.astype('int')
 is_day = weather["temp"].str.contains("High")
 weather["is_day"] = is_day
 
+# drop the weather column
+weather.drop("temp", axis=1, inplace=True)
+
+# format the data to JSON
+weather_json = json.loads(weather.to_json(orient = 'records'))
+
+# pretty print
+formatted_weather_json = json.dumps(weather_json, indent=2)
+print(formatted_weather_json)
+
