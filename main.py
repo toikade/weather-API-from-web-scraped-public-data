@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import json
 
 page = requests.get("https://forecast.weather.gov/MapClick.php?lon=-80.2269744873047&lat=26.01918730099294#.Y2wE2ffMLIU")
 print(page.status_code)
@@ -13,6 +14,8 @@ forecast_list_items = parent_container.select(".tombstone-container")
 periods = [i.select(".period-name")[0].get_text() for i in forecast_list_items]
 # a description of the weather
 descs = [i.select("img")[0]["alt"] for i in forecast_list_items]
+# get the description image
+desc_image = [i.select("img")[0]["src"] for i in forecast_list_items]
 # temperatures in deg. Fahrenheit
 temp = [i.select(".temp")[0].get_text() for i in forecast_list_items]
 # A short description of the weather
@@ -28,10 +31,14 @@ weather = pd.DataFrame({
     "period":periods,
     "desc":descs,
     "temp":temp,
-    "short_descs":short_descs
+    "short_descs":short_descs,
+    "desc_image":desc_image
 })
 
 num_temp = weather['temp'].str.extract("(\d+)", expand=False)
-weather['num_temp'] = num_temp.astype('int')
+weather['num_temp_fahr'] = num_temp.astype('int')
 
-print(type(weather))
+# check if its day or night
+is_day = weather["temp"].str.contains("High")
+weather["is_day"] = is_day
+
