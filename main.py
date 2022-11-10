@@ -3,7 +3,8 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import json
 
-page = requests.get("https://forecast.weather.gov/MapClick.php?lon=-80.2269744873047&lat=26.01918730099294#.Y2wE2ffMLIU")
+base_url = "https://forecast.weather.gov/"
+page = requests.get(base_url+"MapClick.php?lon=-80.2269744873047&lat=26.01918730099294#.Y2wE2ffMLIU")
 print(page.status_code)
 soup = BeautifulSoup(page.content, 'html.parser')
 
