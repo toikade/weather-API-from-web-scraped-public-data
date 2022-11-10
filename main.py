@@ -6,10 +6,15 @@ print(page.status_code)
 soup = BeautifulSoup(page.content, 'html.parser')
 
 parent_container = soup.find_all(id="seven-day-forecast")[0]
-forecast_list_items = parent_container.select(".tombstone-container .period-name")
-eight_list_items = forecast_list_items[1:]
-periods = [i.get_text() for i in eight_list_items]
+forecast_list_items = parent_container.select(".tombstone-container")
+
+periods = [i.select(".period-name")[0].get_text() for i in forecast_list_items]
+descs = [i.select("img")[0]["alt"] for i in forecast_list_items]
+temp = [i.select(".temp")[0].get_text() for i in forecast_list_items]
+short_descs = [i.select(".short-desc")[0].get_text() for i in forecast_list_items]
 
 
-print(len(periods))
-print(periods)
+print(len(forecast_list_items))
+print(forecast_list_items)
+print('+'*100)
+print(short_descs)
