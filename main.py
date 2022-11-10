@@ -8,13 +8,17 @@ soup = BeautifulSoup(page.content, 'html.parser')
 parent_container = soup.find_all(id="seven-day-forecast")[0]
 forecast_list_items = parent_container.select(".tombstone-container")
 
+# periods of the day
 periods = [i.select(".period-name")[0].get_text() for i in forecast_list_items]
+# a description of the weather
 descs = [i.select("img")[0]["alt"] for i in forecast_list_items]
+# temperatures in deg. Fahrenheit
 temp = [i.select(".temp")[0].get_text() for i in forecast_list_items]
+# A short description of the weather
 short_descs = [i.select(".short-desc")[0].get_text() for i in forecast_list_items]
 
 
-print(len(forecast_list_items))
-print(forecast_list_items)
-print('+'*100)
+print(periods)
+print(descs)
+print(temp)
 print(short_descs)
